@@ -1,0 +1,28 @@
+Battery: 
+
+47.5Wh 6600mAh 7.2V
+
+
+
+
+
+Servo Arm 
+
+Surge/startup draw: 2.5A 5v
+Operational draw: 1.5A 5V
+7.5W-12.5
+
+Servo: 7.5W-12.5
+Arduino Uno (45mA @ 5V): 0.25w 
+Raspberry Pi 3B: 1.2W
+webcam: ~5W
+wifi: ~5w
+drive motors (180mA * 7.2): 1.3W  
+
+= ~ 20W
+
+2+ hours usage with 1 battery
+
+
+
+
