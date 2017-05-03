@@ -1,4 +1,4 @@
-//read in string char by char "$SP0." better to add a period at the end
+//read in string char by char "$S100." better to add a period at the end
 void parseCommands() {
   waitForCommand();
   char type = getType();

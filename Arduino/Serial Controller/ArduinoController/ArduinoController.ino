@@ -22,7 +22,7 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 // our servo # counter
 uint8_t servonum = 0;
-int servoReset[6] = {350, 550, 200, 300, 350, 370};
+int servoReset[6] = {350, 380, 350, 300, 350, 370};
 
 
 void setup() {

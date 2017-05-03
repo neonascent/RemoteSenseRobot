@@ -53,13 +53,13 @@ public class Arm_Servo : MonoBehaviour {
                 servoChildren[1].transform.localPosition = new Vector3(offset + (displacement / 2), 0, 0);
                 return;
             case Type.RotationX:
-                rotation.x = displacement+ offset;
+                rotation.x = displacement + offset;
                 break;
             case Type.RotationY:
-                rotation.y = displacement+ offset;
+                rotation.y = displacement + offset;
                 break;
             case Type.RotationZ:
-                rotation.z = displacement+ offset;
+                rotation.z = displacement + offset;
                 break;
             default:
                 break;
