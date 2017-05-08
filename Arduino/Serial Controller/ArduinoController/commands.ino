@@ -6,6 +6,9 @@ void parseCommands() {
   String command = getControllerCommand();
   if (command.length() > 0) { // command
     int value = command.toInt();
+
+    // arm controls 
+    
     if (type == CLAW_COMMAND) {            // claw control
       setArmServo(CLAW_SERVO, value);
     } else 
@@ -23,6 +26,22 @@ void parseCommands() {
     } else 
     if (type == TWIST_COMMAND) {            // twist control
       setArmServo(TWIST_SERVO, value);
+    }  else 
+
+
+    // motor controls
+    
+    if (type == ROBOT_FORWARD) {            //  ROBOT_FORWARD
+      forward();
+    }  else 
+    if (type == ROBOT_BACKWARD) {            // ROBOT_BACKWARD
+      backwards();
+    } else 
+    if (type == ROBOT_LEFT) {            // ROBOT_LEFT
+      left();
+    } else 
+    if (type == ROBOT_RIGHT) {            // ROBOT_RIGHT
+      right();
     }
   }
 
@@ -42,6 +61,7 @@ String getControllerCommand() {
       }
     }
   }
+  
 }
 
 

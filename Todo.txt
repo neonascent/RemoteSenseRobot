@@ -1,0 +1,4 @@
+1) rewrite Arduino servo control code to smooth motion (log desired servo positions and "current" position, and move smoothly to them as updates come in.
+2) Raspberry Pi with serial communication to arduino, running server
+3) Plug current Unity control into Raspberry Pi
+4) Make intermediary server that Rasberry Pi and Unity can connect to 

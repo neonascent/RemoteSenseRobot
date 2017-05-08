@@ -1,0 +1,4 @@
+download noobs
+https://www.raspberrypi.org/downloads/noobs/
+https://www.raspberrypi.org/learning/software-guide/
+write to sd
