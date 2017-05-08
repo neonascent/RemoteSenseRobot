@@ -41,8 +41,11 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 // our servo # counter
 uint8_t servonum = 0;
-int servoReset[6] = {350, 380, 350, 300, 350, 370};
-
+int servoPosition[6] = {350, 380, 350, 300, 350, 370};
+int motorSpeed[2] = {0, 0};
+unsigned long motorStart[2] = {0,0};
+int motorTime[2] = {0,0};
+bool motorsActive = false;
 
 void setup() {
   // set up motor controller pins

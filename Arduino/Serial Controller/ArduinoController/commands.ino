@@ -60,8 +60,8 @@ String getControllerCommand() {
         command += c; //makes the string readString
       }
     }
+    doMotorAction();
   }
-  
 }
 
 
@@ -74,6 +74,7 @@ void waitForCommand() {
         return;
       }
     }
+    doMotorAction();
   }
 }
 
@@ -82,6 +83,7 @@ char getType() {
     if (Serial.available() > 0) {
       return Serial.read();  //gets one byte from serial buffer;
     }
+    doMotorAction();
   }
 }
 

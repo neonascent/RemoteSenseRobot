@@ -3,8 +3,8 @@ void resetServos() {
   //set all servos
   for (int i = 0; i < 6; i++) {
       // Drive each servo one at a time
-    Serial.print(i); Serial.print(" - "); Serial.println(servoReset[i]);
-    pwm.setPWM(i, 0, servoReset[i]);
+    Serial.print(i); Serial.print(" - "); Serial.println(servoPosition[i]);
+    pwm.setPWM(i, 0, servoPosition[i]);
   }
 }
 
@@ -16,36 +16,43 @@ void setArmServo(int n, int pulse) {
 
 // robot direction functions
 
-void backwards() {
-  motor_standby(false);
-  motor_speed2(motor_A,100);
-  motor_speed2(motor_B,100);
-  delay(1000);
-  motor_standby(true);
+void forward() {
+  setMotorAction(motor_A, -100, 200);
+  setMotorAction(motor_B, -100, 200);
 }
 
-void forward() {
-  motor_standby(false);
-  motor_speed2(motor_A,-100);
-  motor_speed2(motor_B,-100);
-  delay(1000);
-  motor_standby(true);
+
+
+void backwards() {
+  setMotorAction(motor_A, 100, 200);
+  setMotorAction(motor_B, 100, 200);
 }
+
 
 void right() {
-  motor_standby(false);
-  motor_speed2(motor_A,-100);
-  motor_speed2(motor_B,100);
-  delay(100);
-  motor_standby(true);
+  setMotorAction(motor_A, -100, 100);
+  setMotorAction(motor_B, 100, 100);
 }
 
 void left() {
+  setMotorAction(motor_A, 100, 100);
+  setMotorAction(motor_B, -100, 100);
+}
+
+void setMotorAction(int m, int s, int duration) {
   motor_standby(false);
-  motor_speed2(motor_A,100);
-  motor_speed2(motor_B,-100);
-  delay(100);
-  motor_standby(true);
+  motorsActive = true;
+  motorSpeed[m] = s;
+  motorStart[m] = millis();
+  motorTime[m] = duration;
+  motor_speed2(m,s);
+}
+
+void doMotorAction() {  
+    if (((motorStart[motor_A] + motorTime[motor_A]) < millis())  && ((motorStart[motor_B] + motorTime[motor_B]) < millis()) && motorsActive) {
+      motor_standby(true);
+      motorsActive = false;
+    } 
 }
 
 // motor functions
