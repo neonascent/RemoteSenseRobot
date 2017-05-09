@@ -1,4 +1,23 @@
-download noobs
+1. download noobs
 https://www.raspberrypi.org/downloads/noobs/
 https://www.raspberrypi.org/learning/software-guide/
-write to sd
+
+2. format 8gb SD (using SDQFormater )
+
+3. copy noobs to SD
+
+4. boot up Raspberry Pi with SD and install Raspbian (full)
+
+5. Boot up raspberry Pi, open terminal and "sudo raspi-config". set SSH to enabled, boot to command line with user "pi"
+
+6. in terminal, "sudo nano /etc/network/interface"
+
+set wlan0 to 
+"
+allow-hotplug wlan0
+auto wlan0
+
+iface wlan0 inet dhcp
+        wpa-ssid "<your wifi SSID>"
+        wpa-psk "<password>"
+"
