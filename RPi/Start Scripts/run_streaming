@@ -1,0 +1,6 @@
+#!/bin/bash
+while ! avconv -ar  44100 -ac 2 -f s16le -i /dev/zero  -f video4linux2 -r 10 -i /dev/video0 -b:a 12k -f flv -s 640x360 -r 4 -b:v 200k rtmp://a.rtmp.youtube.com/live2/<your code>
+do
+    sleep 1
+    echo "restarting youtube video stream"
+done

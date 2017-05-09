@@ -1,0 +1,6 @@
+#!/bin/bash
+while ! ~/arduino_control.py 192.168.1.113 5000
+do
+    sleep 1
+    echo "restarting arduino control"
+done
