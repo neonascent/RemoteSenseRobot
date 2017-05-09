@@ -19,11 +19,13 @@ public class Arm_Servo : MonoBehaviour {
 
     public enum Type { Claw, RotationY, RotationX, RotationZ};
 
-    private SerialPortController sp;
+    private ICommunicationController sp;
 
     // Use this for initialization
     void Start () {
-        sp = FindObjectOfType<SerialPortController>();
+        sp = (ICommunicationController)FindObjectOfType<SerialPortController>();
+        if (sp == null) sp = (ICommunicationController)FindObjectOfType<TCPIPcontroller>();
+        if (sp == null) throw new UnityException("no controller");
     }
 	
 	// Update is called once per frame

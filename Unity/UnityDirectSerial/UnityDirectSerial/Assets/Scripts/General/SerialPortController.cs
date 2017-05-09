@@ -2,7 +2,8 @@
 using System.Collections;
 using System.IO.Ports;
  
-public class SerialPortController : MonoBehaviour {
+public class SerialPortController : MonoBehaviour, ICommunicationController
+{
 
     public string port = "COM4";
     public int speed = 115200;

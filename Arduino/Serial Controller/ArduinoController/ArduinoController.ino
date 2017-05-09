@@ -14,13 +14,13 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 // motor controller arduino pin setup
 //Configure these to fit your design...
-#define out_STBY 6
-#define out_B_PWM 3
-#define out_A_PWM 9
-#define out_A_IN2 8
-#define out_A_IN1 7
-#define out_B_IN1 5
-#define out_B_IN2 4
+#define out_STBY 5
+#define out_B_PWM 2
+#define out_A_PWM 8
+#define out_A_IN2 7
+#define out_A_IN1 6
+#define out_B_IN1 4
+#define out_B_IN2 3
 
 // motor control defines
 #define motor_A 0
