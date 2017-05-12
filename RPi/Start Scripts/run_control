@@ -1,6 +1,8 @@
 #!/bin/bash
-while ! ~/arduino_control.py 192.168.1.113 5000
+
+while true
 do
+    python /home/pi/arduino_control.py ec2-34-209-210-113.us-west-2.compute.amazonaws.com 5000
     sleep 1
     echo "restarting arduino control"
 done

@@ -1,6 +1,28 @@
 #!/bin/bash
-while ! avconv -ar  44100 -ac 2 -f s16le -i /dev/zero  -f video4linux2 -r 10 -i /dev/video0 -b:a 12k -f flv -s 640x360 -r 4 -b:v 200k rtmp://a.rtmp.youtube.com/live2/<your code>
+
+# for c270, see http://elinux.org/RPi_USB_Webcams
+modprobe uvcvideo nodrop=1 timeout=5000 quirks=0x80
+
+# can list formats with
+# avconv -f video4linux2 -list_formats all -i /dev/video0 
+
+#[video4linux2 @ 0x1971740] R :   yuyv422 :           YUYV 4:2:2 : 640x480 160x120 176x144 320x176 320x240 352x288 432x240 544x288 640x360 752x416 800x448 800x600 864x480 #960x544 960x720 1024x576 1184x656 1280x720 1280x960
+#[video4linux2 @ 0x1971740] C :     mjpeg :          Motion-JPEG : 640x480 160x120 176x144 320x176 320x240 352x288 432x240 544x288 640x360 752x416 800x448 800x600 864x480 #960x544 960x720 1024x576 1184x656 1280x720 1280x960
+
+
+while true
 do
+    ffmpeg -ar  11025 -ac 1 -f s16le -i /dev/zero -f video4linux2 -r 5 -s 1280x960 -i /dev/video0 -r 5 -s 1280x960 -vcodec h264_omx -maxrate 768k -bufsize 8080k -vf "format=yuv420p" -g 60 -f flv rtmp://a.rtmp.youtube.com/live2/19u5-1uz7-q4x6-4vz0
     sleep 1
     echo "restarting youtube video stream"
 done
+
+# threads set thread limit 
+# g set 
+
+
+#non-accelerated
+#avconv -ar  11025 -ac 1 -f s16le -i /dev/zero -f video4linux2 -r 5 -s 320x240 -i /dev/video0 -b:a 12k -f flv -g 0 -s 320x240 -threads 2 -qmax 5 -qmin 1 -r 5 -g 5 -b:v 350k rtmp://a.rtmp.youtube.com/live2/19u5-1uz7-q4x6-4vz0
+
+# hardware acceleration (build support in ffmpeg)
+#ffmpeg -ar  11025 -ac 1 -f s16le -i /dev/zero -f video4linux2 -r 5 -s 1280x960 -i /dev/video0 -r 5 -s 1280x960 -vcodec h264_omx -maxrate 768k -bufsize 8080k -vf "format=yuv420p" -g 60 -f flv rtmp://a.rtmp.youtube.com/live2/19u5-1uz7-q4x6-4vz0

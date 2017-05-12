@@ -17,7 +17,25 @@ set wlan0 to
 allow-hotplug wlan0
 auto wlan0
 
+wireless-power off
 iface wlan0 inet dhcp
         wpa-ssid "<your wifi SSID>"
         wpa-psk "<password>"
 "
+
+x. build hardware support
+   https://github.com/legotheboss/YouTube-files/wiki/(RPi)-Compile-FFmpeg-with-the-OpenMAX-H.264-GPU-acceleration
+   
+
+
+
+
+
+
+
+
+todo:
+Raspberry Pi 3 - for encoding speed
+New servos
+Better Power
+smooth arduino servo motion

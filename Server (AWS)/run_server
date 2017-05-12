@@ -1,0 +1,6 @@
+#!/bin/bash
+while ! python control_server.py 
+do
+    sleep 1
+    echo "restarting server"
+done
