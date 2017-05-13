@@ -39,9 +39,14 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 #define ROBOT_LEFT 'L'
 #define ROBOT_RIGHT 'R'
 
+#define SMOOTH_SLOW_FACTOR 6
+
 // our servo # counter
 uint8_t servonum = 0;
-int servoPosition[6] = {350, 380, 350, 300, 350, 370};
+int servoOrigin[6] = {350, 163, 200, 350, 350, 370};
+int servoPosition[6] = {350, 163, 200, 350, 350, 370};
+int servoTarget[6] = {350, 163, 200, 350, 350, 370};
+unsigned long servoStart[6] = {0,0,0,0,0,0};
 int motorSpeed[2] = {0, 0};
 unsigned long motorStart[2] = {0,0};
 int motorTime[2] = {0,0};
@@ -63,7 +68,6 @@ void setup() {
   pwm.begin();
   
   pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
-  
   resetServos();
   yield();
 }

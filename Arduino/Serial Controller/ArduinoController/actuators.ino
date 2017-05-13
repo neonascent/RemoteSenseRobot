@@ -10,7 +10,11 @@ void resetServos() {
 
 // set arm servo
 void setArmServo(int n, int pulse) {
-  pwm.setPWM(n, 0, pulse);
+  
+  //pwm.setPWM(n, 0, pulse);
+  servoStart[n] = millis();
+  servoOrigin[n] = servoPosition[n];
+  servoTarget[n] = pulse;
 }
 
 
@@ -53,6 +57,22 @@ void doMotorAction() {
       motor_standby(true);
       motorsActive = false;
     } 
+    // servos smoothish
+    unsigned long CurrentTime = millis();
+    for (int i = 0; i < 6; i++) {
+      if (servoPosition[i] != servoTarget[i]) {
+        unsigned long ellapsedTime = (CurrentTime - servoStart[i]) / SMOOTH_SLOW_FACTOR;
+        int difference = servoTarget[i] - servoPosition[i];
+        if (abs(difference) < 10) {
+          servoPosition[i] = servoTarget[i];
+        } else if (difference > 0) {
+          servoPosition[i] = servoOrigin[i] + ellapsedTime;  
+        } else if (difference < 0) {
+          servoPosition[i] = servoOrigin[i] - ellapsedTime;  
+        }
+      }
+      pwm.setPWM(i, 0, servoPosition[i]);
+    }
 }
 
 // motor functions
