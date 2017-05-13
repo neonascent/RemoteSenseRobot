@@ -9,9 +9,12 @@ public class TCPIPcontroller : MonoBehaviour, ICommunicationController
 {
     public string ip = "192.168.1.100";
     public int port = 5000;
+    public float sendRate = 0.2f;
 
     public string sendBuffer = "";
-
+    private float responseDisplayTime;
+    private String response = "";
+    private float lastSent = 0f;
     private Socket _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
     private byte[] _recieveBuffer = new byte[8142];
 
@@ -25,7 +28,7 @@ public class TCPIPcontroller : MonoBehaviour, ICommunicationController
         {
             Debug.Log(ex.Message);
         }
-
+        response = "connected";
         _clientSocket.BeginReceive(_recieveBuffer, 0, _recieveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), null);
 
     }
@@ -35,14 +38,18 @@ public class TCPIPcontroller : MonoBehaviour, ICommunicationController
         //Check how much bytes are recieved and call EndRecieve to finalize handshake
         int recieved = _clientSocket.EndReceive(AR);
 
-        if (recieved <= 0)
+        if (recieved <= 0) { 
+            this.Start(); // connection broke
+            Debug.Log("Connection broke.  Restarting");
             return;
+        }
 
         //Copy the recieved data into new buffer , to avoid null bytes
         byte[] recData = new byte[recieved];
         Buffer.BlockCopy(_recieveBuffer, 0, recData, 0, recieved);
 
         //Process data here the way you want , all your bytes will be stored in recData
+        response = System.Text.Encoding.Default.GetString(recData);
 
         //Start receiving again
         _clientSocket.BeginReceive(_recieveBuffer, 0, _recieveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), null);
@@ -63,10 +70,24 @@ public class TCPIPcontroller : MonoBehaviour, ICommunicationController
     // Update is called once per frame
     void Update()
     {
-       SendData(System.Text.Encoding.ASCII.GetBytes(sendBuffer));
-       sendBuffer = "";
+        if ((lastSent + sendRate) < Time.time)
+        {
+            if (sendBuffer.Length > 0)
+            {
+                SendData(System.Text.Encoding.ASCII.GetBytes(sendBuffer + "\n"));
+                sendBuffer = "";
+            }
+            lastSent = Time.time;
+        }
     }
 
+    private void OnGUI()
+    {
+        if (response.Length > 0)
+        {
+            GUI.Box(new Rect(20, 20, 500, 20), response);
+        }
+    }
 
     public void writeCommand(string s)
     {

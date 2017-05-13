@@ -61,7 +61,6 @@ public class motor : MonoBehaviour
             right = true;
         }
 
-        Debug.Log("left " + Input.GetAxis("LeftBumper") + "  " + Input.GetAxis("RightBumper"));
         // xbox input
         if (Input.GetAxis("B") > 0)
         {
