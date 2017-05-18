@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using System.Net;
 using System.Net.Sockets;
-
+using System.Text.RegularExpressions;
 
 public class TCPIPcontroller : MonoBehaviour, ICommunicationController
 {
@@ -14,9 +14,15 @@ public class TCPIPcontroller : MonoBehaviour, ICommunicationController
     public string sendBuffer = "";
     private float responseDisplayTime;
     private String response = "";
+    private String lastCommand = "enteredroom";
+    private bool commandReceived = false;
     private float lastSent = 0f;
     private Socket _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
     private byte[] _recieveBuffer = new byte[8142];
+
+    // box
+    private Texture2D backgroundTexture;
+    private GUIStyle textureStyle;
 
     void Start() 
     {
@@ -31,6 +37,8 @@ public class TCPIPcontroller : MonoBehaviour, ICommunicationController
         response = "connected";
         _clientSocket.BeginReceive(_recieveBuffer, 0, _recieveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), null);
 
+        backgroundTexture = Texture2D.whiteTexture;
+        textureStyle = new GUIStyle { normal = new GUIStyleState { background = backgroundTexture } };
     }
 
     private void ReceiveCallback(IAsyncResult AR)
@@ -38,9 +46,11 @@ public class TCPIPcontroller : MonoBehaviour, ICommunicationController
         //Check how much bytes are recieved and call EndRecieve to finalize handshake
         int recieved = _clientSocket.EndReceive(AR);
 
-        if (recieved <= 0) { 
+        if (recieved <= 0) {
+            _clientSocket.Close();
             this.Start(); // connection broke
             Debug.Log("Connection broke.  Restarting");
+            response = "Connection broke.  Restarting";
             return;
         }
 
@@ -49,10 +59,20 @@ public class TCPIPcontroller : MonoBehaviour, ICommunicationController
         Buffer.BlockCopy(_recieveBuffer, 0, recData, 0, recieved);
 
         //Process data here the way you want , all your bytes will be stored in recData
-        response = System.Text.Encoding.Default.GetString(recData);
+        parseResponse(System.Text.Encoding.Default.GetString(recData));
 
         //Start receiving again
         _clientSocket.BeginReceive(_recieveBuffer, 0, _recieveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), null);
+    }
+
+    // remove IP send details and test for reply to commands
+    void parseResponse(String s)
+    {
+        string regex = "(\\<.*\\>)";
+        string output = Regex.Replace(s, regex, "");
+        if (output.Contains("received: " + lastCommand)) commandReceived = true;
+        response = output;
+        Debug.Log("response: " + response);
     }
 
     private void OnDestroy()
@@ -85,12 +105,15 @@ public class TCPIPcontroller : MonoBehaviour, ICommunicationController
     {
         if (response.Length > 0)
         {
-            GUI.Box(new Rect(20, 20, 500, 20), response);
+            GUI.backgroundColor = commandReceived ? Color.green : Color.red;
+            GUI.Box(new Rect(20, 20, 500, 20), response, textureStyle);
         }
     }
 
     public void writeCommand(string s)
     {
         sendBuffer += s;
+        commandReceived = false;
+        lastCommand = sendBuffer;
     }
 }
