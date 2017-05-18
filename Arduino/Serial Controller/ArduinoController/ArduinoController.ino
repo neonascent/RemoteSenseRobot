@@ -43,9 +43,9 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 // our servo # counter
 uint8_t servonum = 0;
-int servoOrigin[6] = {350, 163, 200, 350, 350, 370};
-int servoPosition[6] = {350, 163, 200, 350, 350, 370};
-int servoTarget[6] = {350, 163, 200, 350, 350, 370};
+int servoOrigin[6] = {290, 133, 127, 265, 307, 310}; // update these once you have configured servo range in Unity program
+int servoPosition[6] = {290, 133, 127, 265, 307, 310};  // update these once you have configured servo range in Unity program
+int servoTarget[6] =  {290, 133, 127, 265, 307, 310}; // update these once you have configured servo range in Unity program
 unsigned long servoStart[6] = {0,0,0,0,0,0};
 int motorSpeed[2] = {0, 0};
 unsigned long motorStart[2] = {0,0};
@@ -67,7 +67,7 @@ void setup() {
 
   pwm.begin();
   
-  pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
+  pwm.setPWMFreq(50);  // MG996R 50Hz
   resetServos();
   yield();
 }
