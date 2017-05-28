@@ -16,7 +16,9 @@ if __name__ == "__main__":
     port = int(sys.argv[2])
     
     try : 
+        
         arduino = serial.Serial('/dev/ttyUSB0', 115200)
+        
     except :
         print 'failed to connect to Arduino'
         sys.exit()

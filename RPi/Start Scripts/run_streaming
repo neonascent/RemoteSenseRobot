@@ -21,8 +21,22 @@ done
 # g set 
 
 
+#-bufsize
+
+#-bufsize sets the buffer size, and can be 1-2 seconds for most gaming screencasts, and up to 5 seconds for more static content. If you use -maxrate 960k then use a -bufsize #of 960k-1920k. You will have to experiment to see what looks best for your content. Refer to your streaming service for the recommended buffer size (it may be shown in #seconds or bits).
+
+#-g
+#
+#Use a 2 second GOP (Group of Pictures), so simply multiply your output frame rate * 2. For example, if your input is -framerate 30, then use -g 60.
+
+
+
 #non-accelerated
 #avconv -ar  11025 -ac 1 -f s16le -i /dev/zero -f video4linux2 -r 5 -s 320x240 -i /dev/video0 -b:a 12k -f flv -g 0 -s 320x240 -threads 2 -qmax 5 -qmin 1 -r 5 -g 5 -b:v 350k rtmp://a.rtmp.youtube.com/live2/19u5-1uz7-q4x6-4vz0
 
 # hardware acceleration (build support in ffmpeg)
 #ffmpeg -ar  11025 -ac 1 -f s16le -i /dev/zero -f video4linux2 -r 5 -s 1280x960 -i /dev/video0 -r 5 -s 1280x960 -vcodec h264_omx -maxrate 768k -bufsize 8080k -vf "format=yuv420p" -g 60 -f flv rtmp://a.rtmp.youtube.com/live2/19u5-1uz7-q4x6-4vz0
+
+
+# forward to ffserver
+#ffmpeg -ar 11025 -ac 1 -f s16le -i /dev/zero -f video4linux2 -r 5 -s 1280x960 -i /dev/video0 http://localhost:8090/feed1.ffm
