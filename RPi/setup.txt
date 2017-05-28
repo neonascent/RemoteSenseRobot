@@ -17,7 +17,35 @@ set wlan0 to
 allow-hotplug wlan0
 auto wlan0
 
+wireless-power off
 iface wlan0 inet dhcp
         wpa-ssid "<your wifi SSID>"
         wpa-psk "<password>"
 "
+
+x. start scripts
+copy in scripts
+sudo crontab -e
+
+add
+@reboot /home/pi/run_streaming &
+@reboot /home/pi/run_control > /home/pi/control.log 2>&1 &
+
+
+x. build hardware support
+   https://github.com/legotheboss/YouTube-files/wiki/(RPi)-Compile-FFmpeg-with-the-OpenMAX-H.264-GPU-acceleration
+   
+x. disable hangup signal on serial port that resets arduino
+stty -F /dev/ttyUSB0 -hupcl
+
+
+
+
+
+
+
+todo:
+Raspberry Pi 3 - for encoding speed
+New servos
+Better Power
+smooth arduino servo motion

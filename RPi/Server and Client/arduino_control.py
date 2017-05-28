@@ -1,5 +1,5 @@
 # telnet program example
-import socket, select, string, sys, serial
+import socket, select, string, sys, serial, re
  
 def prompt() :
     sys.stdout.write('<You> ')
@@ -16,7 +16,9 @@ if __name__ == "__main__":
     port = int(sys.argv[2])
     
     try : 
-        arduino = serial.Serial('/dev/ttyACM0', 115200)
+        
+        arduino = serial.Serial('/dev/ttyUSB0', 115200)
+        
     except :
         print 'failed to connect to Arduino'
         sys.exit()
@@ -48,8 +50,12 @@ if __name__ == "__main__":
                     sys.exit()
                 else :
                     #print data
-                    sys.stdout.write(data)
-                    arduino.write(data)
+                    nonsystemdata = re.sub("[\(\[].*?[\)\]]", "", data)
+                    cleardata = re.sub('[^a-zA-Z0-9$.]', '', nonsystemdata)
+                    sys.stdout.write(cleardata + "\n")
+                    arduino.write(cleardata)
+                    s.send("received: " + cleardata + "\n")
+
              
             #user entered a message
             #else :
