@@ -29,14 +29,14 @@ public class TCPIPcontroller : MonoBehaviour, ICommunicationController
         try
         {
             _clientSocket.Connect(new IPEndPoint(IPAddress.Parse(ip), port));
+            response = "connected";
+            _clientSocket.BeginReceive(_recieveBuffer, 0, _recieveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), null);
         }
         catch (SocketException ex)
         {
             Debug.Log(ex.Message);
         }
-        response = "connected";
-        _clientSocket.BeginReceive(_recieveBuffer, 0, _recieveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), null);
-
+        
         backgroundTexture = Texture2D.whiteTexture;
         textureStyle = new GUIStyle { normal = new GUIStyleState { background = backgroundTexture } };
     }
@@ -84,7 +84,11 @@ public class TCPIPcontroller : MonoBehaviour, ICommunicationController
     {
         SocketAsyncEventArgs socketAsyncData = new SocketAsyncEventArgs();
         socketAsyncData.SetBuffer(data, 0, data.Length);
-        _clientSocket.SendAsync(socketAsyncData);
+        if (_clientSocket.Connected)
+        {
+            _clientSocket.SendAsync(socketAsyncData);
+            Debug.Log("Sent " + data.Length + " bytes");
+        }
     }
 
     // Update is called once per frame

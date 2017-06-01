@@ -40,6 +40,25 @@ public class motor : MonoBehaviour
         if (sp == null) throw new UnityException("no controller");
     }
 
+    public void Direction(int i)
+    {
+        switch(i)
+        {
+            case 0:
+                forward = true;
+                break;
+            case 1:
+                backward = true;
+                break;
+            case 2:
+                left = true;
+                break;
+            case 3:
+                right = true;
+                break;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
